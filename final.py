@@ -143,7 +143,7 @@ with tab1:
     with tab2:
         with st.sidebar:
             choice = st.selectbox("Choose an iteration", st.session_state.reiterations)
-            st.button("Select")
-        
-        st.write(st.session_state.reiterations)
-        st.write(st.session_state.reiterations[choice])
+            show = st.button("Select")
+        if show == True:
+            st.write(st.session_state.reiterations)
+            st.write(st.session_state.reiterations[choice])
