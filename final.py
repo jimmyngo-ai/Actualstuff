@@ -41,7 +41,7 @@ with tab1:
             st.session_state.topic = st.text_input("Topic of negotiation")
             st.session_state.price = st.text_input("Asking price")
         st.session_state.user = st.text_input("Name")
-        form = st.form_submit_button("GENERATE")
+        form = st.form_submit_button("GENERATE OFFER")
 
     # Had ChatGPT refine the prompt commentted underneath into a more specific and clear system prompt.         
     system_prompt = f"""
@@ -96,54 +96,56 @@ with tab1:
     #     Your response should only be the email, nothing more. Also, NO EMOJIS AND ONLY PROFESSIONAL LANGUAGE. \n
     # """
     if form == True:    
-        if st.session_state.iterations <= 1:    
-            chat_history = [
-                {"role": "system", "content": system_prompt},
-                {
-                    "role": "user",
-                    "content": " I," + st.session_state.user + " want to create an email addressed to" + st.session_state.op + " on the topic of " + st.session_state.topic + "."
-                },
-            ]
+        if st.session_state.format != "" and st.session_state.goal != "" and st.session_state.op != "" and st.session_state.topic != "" and st.session_state.price != "" and st.session_state.user != "":
+            if st.session_state.iterations <= 1:    
+                chat_history = [
+                    {"role": "system", "content": system_prompt},
+                    {
+                        "role": "user",
+                        "content": " I," + st.session_state.user + " want to create an email addressed to" + st.session_state.op + " on the topic of " + st.session_state.topic + "."
+                    },
+                ]
 
-            response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=chat_history
-            )
+                response = client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=chat_history
+                )
 
-            dictionary = json.loads(response.choices[0].message.content)
-            st.title(st.session_state.titles[st.session_state.iterations])        
-            st.write(dictionary["subject"])
-            st.write(dictionary["email"])
-            st.write(st.session_state.titles[st.session_state.iterations])
-            st.session_state.reiterations[st.session_state.titles[st.session_state.iterations]] = dictionary
-            st.session_state.iterations += 1
-            st.write(st.session_state.reiterations)
-        else:   
-            chat_history = [
-                {"role": "system", "content": system_prompt},
-                {
-                    "role": "user",
-                    "content": " I," + st.session_state.user + " want to create an counteroffer addressed to" + st.session_state.op + " on the topic of " + st.session_state.topic + ". They previously offered"
-                },
-            ]
+                dictionary = json.loads(response.choices[0].message.content)
+                st.title(st.session_state.titles[st.session_state.iterations])        
+                st.write(dictionary["subject"])
+                st.write(dictionary["email"])
+                st.write(st.session_state.titles[st.session_state.iterations])
+                st.session_state.reiterations[st.session_state.titles[st.session_state.iterations]] = dictionary
+                st.session_state.iterations += 1
+                st.write(st.session_state.reiterations)
+            else:   
+                chat_history = [
+                    {"role": "system", "content": system_prompt},
+                    {
+                        "role": "user",
+                        "content": " I," + st.session_state.user + " want to create an counteroffer addressed to" + st.session_state.op + " on the topic of " + st.session_state.topic + ". They previously offered"
+                    },
+                ]
 
-            response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=chat_history
-            )
+                response = client.chat.completions.create(
+                    model="gpt-4o",
+                    messages=chat_history
+                )
 
-            dictionary = json.loads(response.choices[0].message.content)
-            st.title(st.session_state.titles[st.session_state.iterations])        
-            st.write(dictionary["subject"])
-            st.write(dictionary["email"])
-            st.write(st.session_state.titles[st.session_state.iterations])
-            st.session_state.reiterations[st.session_state.titles[st.session_state.iterations]] = dictionary
-            st.session_state.iterations += 1
-            st.write(st.session_state.reiterations)
+                dictionary = json.loads(response.choices[0].message.content)
+                st.title(st.session_state.titles[st.session_state.iterations])        
+                st.write(dictionary["subject"])
+                st.write(dictionary["email"])
+                st.write(st.session_state.titles[st.session_state.iterations])
+                st.session_state.reiterations[st.session_state.titles[st.session_state.iterations]] = dictionary
+                st.session_state.iterations += 1
+                st.write(st.session_state.reiterations)
     with tab2:
         with st.sidebar:
-            choice = st.selectbox("Choose an iteration", st.session_state.reiterations)
-            show = st.button("Select")
+            with st.form("i hate this"):
+                choice = st.selectbox("Choose an iteration", st.session_state.reiterations)
+                show = st.form_submit_button("Select")
         if show == True:
             st.write(st.session_state.reiterations)
             st.write(st.session_state.reiterations[choice])
