@@ -98,6 +98,7 @@ with st_yled.container():
         - Escape line breaks properly
         - Contain NO markdown formatting
         - Contain no surrounding text outside the JSON object
+        - Contain NO "backslash n"
         """
 
         st.session_state.chat_historyA = [
