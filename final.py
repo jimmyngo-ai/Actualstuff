@@ -75,7 +75,7 @@ with st_yled.container():
         8. For counteroffers, if the recipient refuses to lower their price, create a compromise. A numerical compromise, such as a skewed average between the two prices.
         9. If the offer is simply unreasonable, humor the user, but give many indications that the user was the writer.
         10. If more than 50% of the inputs are in a different language, respond in that language. Otherwise, use English.
-        11. Should the inputs be gibberish or non-financially related, this program should out put a subject of "FAILED TO GENERATE" and a email of "Please input focused inputs"
+        11. IF THE INPUT IS GIBBERISH OR NON-FINANCIAL related, this program should out put a subject of "FAILED TO GENERATE" and a email of "Please input focused inputs"
 
         # Output Requirements
         Return the response ONLY in valid JSON format.
